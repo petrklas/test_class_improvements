@@ -29,11 +29,11 @@ class FileTransformer {
             
             foreach ($dataArray as &$element) {
                 // Transform each element of the array
-                $row = $this->transform($element);
+                $this->transform($element);
 
                 require '../DB/SomeOtherDbClass.php';
                 $db = SomeOtherDbClass:getInstance();
-                $db->query("UPDATE `Table` SET name='" . $row->name . "' WHERE id = ".$row->id);
+                $db->query("UPDATE `Table` SET name='" . $element->name . "' WHERE id = ".$element->id);
             }
 
             // Convert the array back to JSON
@@ -45,12 +45,10 @@ class FileTransformer {
             }
     }
 
-    public function transform($row) {
+    public function transform(&$row) {
         if (is_string($row->name)) {
             $row->name = strtoupper($row->name);
         }
-
-        return $row;
     }
 }
 
