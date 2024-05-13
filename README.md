@@ -25,8 +25,6 @@ class FileTransformer {
             // Load JSON content from file
             $jsonData = file_get_contents($this->inputFile);
             $dataArray = json_decode($jsonData, true);
-            require '../DB/SomeOtherDbClass.php';
-            $db = SomeOtherDbClass:getInstance();
 
             // Transform each element of the array
             foreach ($dataArray as &$element) {
@@ -34,6 +32,8 @@ class FileTransformer {
                     $name = strtoupper($element->name);
                 }
 
+                require '../DB/SomeOtherDbClass.php';
+                $db = SomeOtherDbClass:getInstance();
                 $db->query("UPDATE `Table` SET name='${$element}' WHERE id = ${$id}");
             }
 
