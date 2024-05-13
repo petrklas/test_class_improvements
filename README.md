@@ -34,7 +34,7 @@ class FileTransformer {
 
                 require '../DB/SomeOtherDbClass.php';
                 $db = SomeOtherDbClass:getInstance();
-                $db->query("UPDATE `Table` SET name='${$element}' WHERE id = ${$id}");
+                $db->query("UPDATE `Table` SET name='" . $element . "' WHERE id = ".$id);
             }
 
             // Convert the array back to JSON
