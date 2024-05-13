@@ -21,20 +21,19 @@ class FileTransformer {
         $this->outputFile = $outputFile;
     }
 
-    public function transformFile() {
+    public function loadTransformAndStore() {
             // Load JSON content from file
             $jsonData = file_get_contents($this->inputFile);
             $dataArray = json_decode($jsonData, true);
 
-            // Transform each element of the array
+            
             foreach ($dataArray as &$element) {
-                if (is_string($element->name)) {
-                    $name = strtoupper($element->name);
-                }
+                // Transform each element of the array
+                $row = $this->transform($element);
 
                 require '../DB/SomeOtherDbClass.php';
                 $db = SomeOtherDbClass:getInstance();
-                $db->query("UPDATE `Table` SET name='" . $element . "' WHERE id = ".$id);
+                $db->query("UPDATE `Table` SET name='" . $row->name . "' WHERE id = ".$row->id);
             }
 
             // Convert the array back to JSON
@@ -45,6 +44,14 @@ class FileTransformer {
                 return false;
             }
     }
+
+    public function transform($row) {
+        if (is_string($row->name)) {
+            $row->name = strtoupper($row->name);
+        }
+
+        return $row;
+    }
 }
 
 // Test Case
@@ -52,7 +59,7 @@ $inputFile = '/path/in/input.json'; // Assuming input file is in JSON format
 $outputFile = '/path/out/output.json';
 
 $fileTransformer = new FileTransformer($inputFile, $outputFile);
-$result = $fileTransformer->transformFile();
+$result = $fileTransformer->loadTransformAndStore();
 
 if ($result) {
     echo "File transformed successfully!";
