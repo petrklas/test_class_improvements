@@ -3,7 +3,7 @@
 You have a class that load the JSON from file, transform it and than save it back to file. Suggest the class improvements.
 
 <!-- language: php -->
-```
+```php
 <?php
 
 class FileTransformer {
