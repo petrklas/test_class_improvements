@@ -22,24 +22,20 @@ class FileTransformer {
     }
 
     public function loadTransformAndStore() {
-            // Load JSON content from file
             $jsonData = file_get_contents($this->inputFile);
             $dataArray = json_decode($jsonData, true);
 
             
             foreach ($dataArray as &$element) {
-                // Transform each element of the array
                 $this->transform($element);
 
                 require '../DB/SomeOtherDbClass.php';
-                $db = SomeOtherDbClass:getInstance();
+                $db = SomeOtherDbClass::getInstance();
                 $db->query("UPDATE `Table` SET name='" . $element->name . "' WHERE id = ".$element->id);
             }
 
-            // Convert the array back to JSON
             $transformedJson = json_encode($dataArray);
 
-            // Save transformed JSON to output file
             if(!file_put_contents($this->outputFile, $transformedJson)) {
                 return false;
             }
